@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Form, redirect } from 'react-router'
+import { Form, redirect, useActionData, useNavigation } from 'react-router'
 import { createOrder } from '@/shared/service/apiRestaurant.js'
 
 // https://uibakery.io/regex-library/phone-number
@@ -34,6 +34,12 @@ function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart
 
+  const navigation = useNavigation()
+  const isSubmitting = navigation.state === 'submitting'
+
+  const error = useActionData()
+  console.log(error)
+
   return (
     <div>
       <h2>Ready to order? Let's go!</h2>
@@ -49,6 +55,7 @@ function CreateOrder() {
           <div>
             <input type="tel" name="phone" required />
           </div>
+          {error && error.phone && `${error.phone}`}
         </div>
 
         <div>
@@ -74,7 +81,7 @@ function CreateOrder() {
         </div>
 
         <div>
-          <button>Order now</button>
+          <button disabled={isSubmitting}>{isSubmitting ? '正在下单...' : 'Order now'}</button>
         </div>
       </Form>
     </div>
@@ -83,6 +90,12 @@ function CreateOrder() {
 
 export async function createOrderAction({ request }) {
   const data = Object.fromEntries(await request.formData())
+  const error = {}
+
+  if (!isValidPhone(data.phone)) error.phone = `能不能输入一个正确的手机号, fw`
+
+  // return 的数据可以在组件中通过 useActionData 获取到
+  if (Object.keys(error).length) return error
 
   // 表单数据处理
   const formData = {
@@ -92,7 +105,7 @@ export async function createOrderAction({ request }) {
   }
 
   const newOrder = await createOrder(formData)
-  console.log(newOrder)
+
   return redirect(`/order/${newOrder.id}`)
 }
 
