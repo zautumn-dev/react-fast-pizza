@@ -4,7 +4,7 @@ import Home from '@UI/Home.jsx'
 import Menu from '@/features/menu/Menu.jsx'
 import Cart from '@/features/cart/Cart.jsx'
 import Order from '@/features/order/Order.jsx'
-import CreateOrder from '@/features/order/CreateOrder.jsx'
+import CreateOrder, { createOrderAction } from '@/features/order/CreateOrder.jsx'
 import Layout from '@UI/Layout/index.jsx'
 import Error from '@UI/Error'
 
@@ -39,6 +39,7 @@ export const routes = [
       {
         path: 'order/create',
         element: <CreateOrder />,
+        action: createOrderAction,
       },
       {
         path: '/order/:orderId',
