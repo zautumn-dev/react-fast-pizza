@@ -1,11 +1,13 @@
+import { Navigate } from 'react-router'
+
 import Home from '@UI/Home.jsx'
-import Error from '@UI/Error.jsx'
 import Menu from '@/features/menu/Menu.jsx'
 import Cart from '@/features/cart/Cart.jsx'
 import Order from '@/features/order/Order.jsx'
 import CreateOrder from '@/features/order/CreateOrder.jsx'
-import { Navigate } from 'react-router'
 import Layout from '@UI/Layout/index.jsx'
+import NotFound from '@UI/Error.jsx'
+import { menuLoader } from '@/features/menu/MenuLoader.jsx'
 
 export const routes = [
   {
@@ -23,6 +25,7 @@ export const routes = [
       {
         path: '/menu',
         element: <Menu />,
+        loader: menuLoader,
       },
       {
         path: '/cart',
@@ -41,6 +44,6 @@ export const routes = [
 
   {
     path: '*',
-    element: <Error />,
+    element: <NotFound />,
   },
 ]
