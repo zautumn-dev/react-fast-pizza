@@ -6,13 +6,16 @@ import Cart from '@/features/cart/Cart.jsx'
 import Order from '@/features/order/Order.jsx'
 import CreateOrder from '@/features/order/CreateOrder.jsx'
 import Layout from '@UI/Layout/index.jsx'
-import NotFound from '@UI/Error.jsx'
+import Error from '@UI/Error'
+
 import { menuLoader } from '@/features/menu/MenuLoader.jsx'
 
 export const routes = [
   {
     path: '/',
     element: <Layout />,
+    // 子路由 error 会冒泡到父路由
+    errorElement: <Error />,
     children: [
       {
         path: '/',
@@ -26,6 +29,7 @@ export const routes = [
         path: '/menu',
         element: <Menu />,
         loader: menuLoader,
+        errorElement: <Error />,
       },
       {
         path: '/cart',
@@ -42,8 +46,8 @@ export const routes = [
     ],
   },
 
-  {
-    path: '*',
-    element: <NotFound />,
-  },
+  // {
+  //   path: '*',
+  //   element: <NotFound />,
+  // },
 ]
