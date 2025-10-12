@@ -9,6 +9,7 @@ import Layout from '@UI/Layout/index.jsx'
 import Error from '@UI/Error'
 
 import { menuLoader } from '@/features/menu/MenuLoader.jsx'
+import { OrderLoader } from '@/features/order/OrderLoader.js'
 
 export const routes = [
   {
@@ -40,8 +41,9 @@ export const routes = [
         element: <CreateOrder />,
       },
       {
-        path: '/order/:id',
+        path: '/order/:orderId',
         element: <Order />,
+        loader: OrderLoader,
       },
     ],
   },
