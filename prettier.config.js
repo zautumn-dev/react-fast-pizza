@@ -27,4 +27,10 @@ export default {
   quoteProps: 'as-needed',
   // 嵌入语言（如：HTML 中的 CSS/JS）是否格式化
   embeddedLanguageFormatting: 'auto',
+
+  // plugin 配置 prettier 的 tailwind 格式化插件
+  // https://github.com/tailwindlabs/prettier-plugin-tailwindcss
+  plugins: ['prettier-plugin-tailwindcss'],
+  // https://github.com/tailwindlabs/prettier-plugin-tailwindcss?tab=readme-ov-file#specifying-your-tailwind-stylesheet-path-tailwind-css-v4
+  tailwindStylesheet: './src/main.css',
 }

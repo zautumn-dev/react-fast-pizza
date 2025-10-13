@@ -2,6 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import eslint from 'vite-plugin-eslint2'
 import path from 'node:path'
+import tailwindcss from '@tailwindcss/vite'
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -11,6 +13,8 @@ export default defineConfig({
       lintInWorker: true,
       lintOnStart: true,
     }),
+    // 注册 tailwind 插件
+    tailwindcss(),
   ],
   server: {
     open: true,
