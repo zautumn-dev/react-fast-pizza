@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import OrderSearch from '@/features/order/components/OrderSearch.jsx'
+import OrderSearch from '@UI/Layout/components/OrderSearch.jsx'
 import UserName from '@/features/user/UserName.jsx'
 
 function Header() {
