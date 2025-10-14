@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Form, redirect, useActionData, useNavigation } from 'react-router'
 import { createOrder } from '@/shared/service/apiRestaurant.js'
 
@@ -81,7 +80,16 @@ function CreateOrder() {
         </div>
 
         <div>
-          <button disabled={isSubmitting}>{isSubmitting ? '正在下单...' : 'Order now'}</button>
+          {/* ring */}
+          {/* https://tailwindcss.com/docs/box-shadow#adding-a-ring */}
+          {/* disabled */}
+          {/* https://tailwindcss.com/docs/hover-focus-and-other-states#disabled */}
+          {/* https://tailwindcss.com/docs/cursor */}
+          <button
+            disabled={isSubmitting}
+            className="disabled:pointer cursor-pointer rounded-full bg-yellow-400 px-3 py-2 font-semibold text-stone-800 uppercase transition-colors duration-300 hover:bg-yellow-300 focus:ring focus:ring-yellow-300 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed">
+            {isSubmitting ? 'Order is being placed...' : 'Order now'}
+          </button>
         </div>
       </Form>
     </div>
