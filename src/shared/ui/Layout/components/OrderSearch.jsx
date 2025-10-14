@@ -19,7 +19,7 @@ function OrderSearch() {
       <input
         type="text"
         placeholder="search..."
-        className="focus:ring-opacity-30 w-36 rounded-full bg-yellow-100 px-4 py-1 text-sm transition-all duration-300 placeholder:text-stone-500 focus:ring focus:ring-yellow-400 focus:outline-none sm:w-64 sm:focus:w-72"
+        className="focus:ring-opacity-30 w-36 rounded-full bg-yellow-100 px-4 py-1 text-sm transition-all duration-300 placeholder:text-stone-500 focus:ring-3 focus:ring-yellow-400 focus:outline-none sm:w-64 sm:focus:w-72"
         value={query}
         onChange={e => setQuery(e.target.value)}
       />
