@@ -1,5 +1,6 @@
 import { Form, redirect, useActionData, useNavigation } from 'react-router'
 import { createOrder } from '@/shared/service/apiRestaurant.js'
+import Button from '@UI/components/Button.jsx'
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = str => /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(str)
@@ -88,9 +89,7 @@ function CreateOrder() {
           {/* disabled */}
           {/* https://tailwindcss.com/docs/hover-focus-and-other-states#disabled */}
           {/* https://tailwindcss.com/docs/cursor */}
-          <button disabled={isSubmitting} className="submit">
-            {isSubmitting ? 'Order is being placed...' : 'Order now'}
-          </button>
+          <Button disabled={isSubmitting}>{isSubmitting ? 'Order is being placed...' : 'Order now'}</Button>
         </div>
       </Form>
     </div>
