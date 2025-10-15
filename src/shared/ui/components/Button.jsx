@@ -1,16 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function Button({ children, disabled = false, className, to }) {
-  const classNames = `submit ${className}`
+const baseStyle =
+  'cursor-pointer rounded-full bg-yellow-400 font-semibold text-stone-800 uppercase transition-colors duration-300 hover:bg-yellow-300 focus:ring-3 focus:ring-yellow-300 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed '
+
+function Button({ children, disabled = false, className, to, type = 'primary' }) {
+  const types = {
+    primary: `${baseStyle} px-3 py-2 sm:px-5 sm:py-6 ${className}`,
+    small: `${baseStyle} px-3 py-2 sm:px-4 sm:py-1.5 text-sm ${className}`,
+  }
   if (to)
     return (
-      <Link to={to} className={classNames}>
+      <Link to={to} className={types[type]}>
         {children}
       </Link>
     )
   return (
-    <button disabled={disabled} className={classNames}>
+    <button disabled={disabled} className={types[type]}>
       {children}
     </button>
   )

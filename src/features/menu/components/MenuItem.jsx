@@ -1,15 +1,26 @@
 import { formatCurrency } from '@utils'
+import Button from '@UI/components/Button.jsx'
 
 function MenuItem({ pizza }) {
-  const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza
+  const { name, unitPrice, ingredients, soldOut, imageUrl } = pizza
 
   return (
-    <li>
-      <img src={imageUrl} alt={name} />
-      <div>
-        <p>{name}</p>
-        <p>{ingredients.join(', ')}</p>
-        <div>{!soldOut ? <p>{formatCurrency(unitPrice)}</p> : <p>Sold out</p>}</div>
+    // gap
+    // https://tailwindcss.com/docs/gap
+    <li className="flex gap-4 py-3">
+      <img src={imageUrl} alt={name} className={`${soldOut ? 'opacity-70 grayscale' : ''}`} />
+      <div className="mt-0.5 flex grow flex-col">
+        <p className="font-semibold">{name}</p>
+        {/*italic -> 斜体 capitalize -> 首字母大写*/}
+        <p className="text-sm text-stone-400 capitalize italic">{ingredients.join(', ')}</p>
+        <div className="mt-auto flex justify-between">
+          {!soldOut ? (
+            <p className="flex items-center text-sm">{formatCurrency(unitPrice)}</p>
+          ) : (
+            <p className="flex items-center text-sm font-semibold text-stone-300 uppercase">Sold out</p>
+          )}
+          <Button type="small">add to cart</Button>
+        </div>
       </div>
     </li>
   )
