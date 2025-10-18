@@ -18,7 +18,7 @@
   }
 
   .input {
-    @apply w-full rounded-full border border-stone-300 bg-white px-4 py-1 text-sm transition-all duration-200 focus:ring-3 focus:ring-yellow-300 focus:outline-none;
+    @apply rounded-full border border-stone-300 bg-white px-4 py-1 text-sm transition-all duration-200 focus:ring-3 focus:ring-yellow-300 focus:outline-none;
   }
 
   /* https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
