@@ -2,6 +2,7 @@ import { formatCurrency } from '@utils'
 import Button from '@UI/components/Button.jsx'
 import { useDispatch } from 'react-redux'
 import { deleteItem } from '@/features/cart/store/cartSlice.js'
+import DelCartItem from '@/features/cart/components/DelCartItem.jsx'
 
 function CartItem({ item }) {
   const { pizzaId, name, quantity, totalPrice } = item
@@ -19,10 +20,7 @@ function CartItem({ item }) {
       </p>
       <div className="flex items-center justify-between sm:gap-6">
         <p className="text-sm font-bold">{formatCurrency(totalPrice)}</p>
-
-        <Button type="small" onClick={handleDelPizza}>
-          Delete
-        </Button>
+        <DelCartItem id={pizzaId} />
       </div>
     </li>
   )

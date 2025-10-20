@@ -2,11 +2,15 @@ import { formatCurrency } from '@utils'
 import Button from '@UI/components/Button.jsx'
 import { useDispatch } from 'react-redux'
 import { addItem } from '@/features/cart/store/cartSlice.js'
+import { useCartQuantityById } from '@/features/cart/store/cartSelector.js'
+import DelCartItem from '@/features/cart/components/DelCartItem.jsx'
 
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza
 
   const dispatch = useDispatch()
+
+  const quantity = useCartQuantityById(id)
 
   function addMenuItemToCart() {
     if (!id) return
@@ -39,9 +43,12 @@ function MenuItem({ pizza }) {
           {soldOut ? (
             ''
           ) : (
-            <Button type="small" onClick={addMenuItemToCart}>
-              add to cart
-            </Button>
+            <>
+              {!!quantity && <DelCartItem id={id} />}
+              <Button type="small" onClick={addMenuItemToCart}>
+                add to cart
+              </Button>
+            </>
           )}
         </div>
       </div>
