@@ -1,8 +1,25 @@
 import { formatCurrency } from '@utils'
 import Button from '@UI/components/Button.jsx'
+import { useDispatch } from 'react-redux'
+import { addItem } from '@/features/cart/store/cartSlice.js'
 
 function MenuItem({ pizza }) {
-  const { name, unitPrice, ingredients, soldOut, imageUrl } = pizza
+  const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza
+
+  const dispatch = useDispatch()
+
+  function addMenuItemToCart() {
+    if (!id) return
+    dispatch(
+      addItem({
+        pizzaId: id,
+        name,
+        quantity: 1,
+        unitPrice,
+        totalPrice: unitPrice * 1,
+      }),
+    )
+  }
 
   return (
     // gap
@@ -19,7 +36,13 @@ function MenuItem({ pizza }) {
           ) : (
             <p className="flex items-center text-sm font-semibold text-stone-300 uppercase">Sold out</p>
           )}
-          <Button type="small">add to cart</Button>
+          {soldOut ? (
+            ''
+          ) : (
+            <Button type="small" onClick={addMenuItemToCart}>
+              add to cart
+            </Button>
+          )}
         </div>
       </div>
     </li>
