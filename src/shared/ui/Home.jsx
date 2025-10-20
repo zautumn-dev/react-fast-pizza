@@ -12,7 +12,13 @@ function Home() {
         <br />
         <div className="text-yellow-500">Straight out of the oven, straight to you.</div>
       </h1>
-      {!fullName ? <CreateUser /> : <Button type="primary">continue ordering, {fullName}</Button>}
+      {!fullName ? (
+        <CreateUser />
+      ) : (
+        <Button type="primary" to="/cart">
+          continue ordering, {fullName}
+        </Button>
+      )}
     </div>
   )
 }
