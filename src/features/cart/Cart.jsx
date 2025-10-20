@@ -2,6 +2,10 @@ import LinkComponent from '@UI/components/LinkComponent.jsx'
 import Button from '@UI/components/Button.jsx'
 import CartItem from '@/features/cart/components/CartItem.jsx'
 import { useUserSelector } from '@/features/user/store/userSelector.js'
+import { useCartList } from '@/features/cart/store/cartSelector.js'
+import { useDispatch } from 'react-redux'
+import { clearCart } from '@/features/cart/store/cartSlice.js'
+import EmptyCart from '@/features/cart/components/EmptyCart.jsx'
 
 const fakeCart = [
   {
@@ -28,9 +32,17 @@ const fakeCart = [
 ]
 
 function Cart() {
-  const cart = fakeCart
+  const cart = useCartList()
 
   const fullName = useUserSelector()
+
+  const dispatch = useDispatch()
+
+  if (!cart.length) return <EmptyCart />
+
+  function handleClearCart() {
+    dispatch(clearCart())
+  }
 
   return (
     <div className="px-4 py-3">
@@ -49,7 +61,9 @@ function Cart() {
           Order pizzas
         </Button>
 
-        <Button type="secondary">Clear cart</Button>
+        <Button type="secondary" disabled={!cart.length} onClick={handleClearCart}>
+          Clear cart
+        </Button>
       </div>
     </div>
   )
