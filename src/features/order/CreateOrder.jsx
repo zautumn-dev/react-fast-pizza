@@ -1,6 +1,7 @@
 import { Form, redirect, useActionData, useNavigation } from 'react-router'
 import { createOrder } from '@/shared/service/apiRestaurant.js'
 import Button from '@UI/components/Button.jsx'
+import { useUserSelector } from '@/features/user/store/userSelector.js'
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = str => /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(str)
@@ -34,11 +35,12 @@ function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart
 
+  const fullName = useUserSelector()
+
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
 
   const error = useActionData()
-  console.log(error)
 
   return (
     <div className="px-4 py-6">
@@ -48,7 +50,7 @@ function CreateOrder() {
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">First Name</label>
 
-          <input type="text" name="customer" required className="input grow" />
+          <input type="text" name="customer" required className="input grow" defaultValue={fullName} />
         </div>
 
         <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">

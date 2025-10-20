@@ -1,6 +1,7 @@
 import LinkComponent from '@UI/components/LinkComponent.jsx'
 import Button from '@UI/components/Button.jsx'
 import CartItem from '@/features/cart/components/CartItem.jsx'
+import { useUserSelector } from '@/features/user/store/userSelector.js'
 
 const fakeCart = [
   {
@@ -29,11 +30,13 @@ const fakeCart = [
 function Cart() {
   const cart = fakeCart
 
+  const fullName = useUserSelector()
+
   return (
     <div className="px-4 py-3">
       <LinkComponent to="/menu">&larr; Back to menu</LinkComponent>
 
-      <h2 className="mt-7 text-xl font-semibold">Your cart, name</h2>
+      <h2 className="mt-7 text-xl font-semibold">Your cart, {fullName}</h2>
 
       <ul className="mt-3 divide-y divide-stone-200 border-b">
         {cart.map(item => (
