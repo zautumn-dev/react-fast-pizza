@@ -1,12 +1,14 @@
 import { Form, redirect, useActionData, useNavigation } from 'react-router'
 import { createOrder } from '@/shared/service/apiRestaurant.js'
 import Button from '@UI/components/Button.jsx'
-import { useUserSelector } from '@/features/user/store/userSelector.js'
+import { useUserAddress, useUserSelector } from '@/features/user/store/userSelector.js'
 import { useCartList, useCartTotalCartPrice } from '@/features/cart/store/cartSelector.js'
 import EmptyCart from '@/features/cart/components/EmptyCart.jsx'
 import { store } from '@/shared/store/index.js'
 import { clearCart } from '@/features/cart/store/cartSlice.js'
 import { useMemo, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { fetchAddressThunk } from '@/features/user/store/userSlice.js'
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = str => /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(str)
@@ -15,21 +17,26 @@ function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
   const [priority, setPriority] = useState('off')
 
-  const cart = useCartList()
-
-  const fullName = useUserSelector()
+  const dispatch = useDispatch()
 
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
 
+  const cart = useCartList()
+  const fullName = useUserSelector()
   const cartTotalPrice = useCartTotalCartPrice()
+  const error = useActionData()
+  const userAddress = useUserAddress()
 
   const prioritiesPrice = priority === 'on' ? cartTotalPrice * 0.1 : 0
   const totalPrice = cartTotalPrice + prioritiesPrice
 
-  const error = useActionData()
-
   if (!cart.length) return <EmptyCart />
+
+  function handleGetPositionClick(e) {
+    e.preventDefault()
+    dispatch(fetchAddressThunk(111))
+  }
 
   return (
     <div className="px-4 py-6">
@@ -53,10 +60,25 @@ function CreateOrder() {
 
         <div className="relative mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
           <label className="sm:basis-40">Address</label>
-
           <div className="grow">
-            <input type="text" name="address" required className="input w-full" />
+            <input className="input w-full" type="text" name="address" required defaultValue={userAddress} />
+            {/*{addressStatus === 'error' && (*/}
+            {/*  <p className="mt-2 rounded-md bg-red-100 p-2 text-xs text-red-700">{errorAddress}</p>*/}
+            {/*)}*/}
           </div>
+
+          {!userAddress && (
+            <span className="top-[3px] right-[3px] z-50 md:top-[5px] md:right-[5px]">
+              <Button
+                type="small"
+                onClick={e => {
+                  e.preventDefault()
+                  dispatch(fetchAddressThunk())
+                }}>
+                Get position
+              </Button>
+            </span>
+          )}
         </div>
 
         <div className="mb-12 flex items-center gap-5">
