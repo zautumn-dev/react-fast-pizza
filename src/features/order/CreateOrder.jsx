@@ -2,45 +2,34 @@ import { Form, redirect, useActionData, useNavigation } from 'react-router'
 import { createOrder } from '@/shared/service/apiRestaurant.js'
 import Button from '@UI/components/Button.jsx'
 import { useUserSelector } from '@/features/user/store/userSelector.js'
+import { useCartList, useCartTotalCartPrice } from '@/features/cart/store/cartSelector.js'
+import EmptyCart from '@/features/cart/components/EmptyCart.jsx'
+import { store } from '@/shared/store/index.js'
+import { clearCart } from '@/features/cart/store/cartSlice.js'
+import { useMemo, useState } from 'react'
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = str => /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(str)
 
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: 'Mediterranean',
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: 'Vegetale',
-    quantity: 1,
-
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: 'Spinach and Mushroom',
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-]
-
 function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
-  const cart = fakeCart
+  const [priority, setPriority] = useState('off')
+
+  const cart = useCartList()
 
   const fullName = useUserSelector()
 
   const navigation = useNavigation()
   const isSubmitting = navigation.state === 'submitting'
 
+  const cartTotalPrice = useCartTotalCartPrice()
+
+  const prioritiesPrice = priority === 'on' ? cartTotalPrice * 0.1 : 0
+  const totalPrice = cartTotalPrice + prioritiesPrice
+
   const error = useActionData()
+
+  if (!cart.length) return <EmptyCart />
 
   return (
     <div className="px-4 py-6">
@@ -78,7 +67,8 @@ function CreateOrder() {
             name="priority"
             id="priority"
             className="h-6 w-6 accent-yellow-400 focus:ring focus:ring-yellow-400 focus:ring-offset-2 focus:outline-none"
-
+            value={priority}
+            onChange={e => setPriority(e.target.checked ? 'on' : 'off')}
             // value={withPriority}
             // onChange={(e) => setWithPriority(e.target.checked)}
           />
@@ -97,7 +87,9 @@ function CreateOrder() {
           {/* disabled */}
           {/* https://tailwindcss.com/docs/hover-focus-and-other-states#disabled */}
           {/* https://tailwindcss.com/docs/cursor */}
-          <Button disabled={isSubmitting}>{isSubmitting ? 'Order is being placed...' : 'Order now'}</Button>
+          <Button disabled={isSubmitting}>
+            {isSubmitting ? 'Order is being placed...' : `Order now from €${totalPrice}`}
+          </Button>
         </div>
       </Form>
     </div>
@@ -121,6 +113,9 @@ export async function createOrderAction({ request }) {
   }
 
   const newOrder = await createOrder(formData)
+
+  // 清空购物车
+  store.dispatch(clearCart())
 
   return redirect(`/order/${newOrder.id}`)
 }
