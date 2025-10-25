@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { addItem } from '@/features/cart/store/cartSlice.js'
 import { useCartQuantityById } from '@/features/cart/store/cartSelector.js'
 import DelCartItem from '@/features/cart/components/DelCartItem.jsx'
+import UpdateItemQuantity from '@/features/cart/components/UpdateItemQuantity.jsx'
 
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza
@@ -44,10 +45,17 @@ function MenuItem({ pizza }) {
             ''
           ) : (
             <>
-              {!!quantity && <DelCartItem id={id} />}
-              <Button type="small" onClick={addMenuItemToCart}>
-                add to cart
-              </Button>
+              {!!quantity && (
+                <>
+                  <UpdateItemQuantity pizzaId={id} currentQuantity={quantity} />
+                  <DelCartItem id={id} />
+                </>
+              )}
+              {!quantity && (
+                <Button type="small" onClick={addMenuItemToCart}>
+                  add to cart
+                </Button>
+              )}
             </>
           )}
         </div>

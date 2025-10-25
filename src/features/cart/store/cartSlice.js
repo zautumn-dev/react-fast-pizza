@@ -1,4 +1,5 @@
 import { combineReducers, createSlice } from '@reduxjs/toolkit'
+import { act } from 'react'
 
 const initialState = {
   cart: [],
@@ -13,12 +14,28 @@ const initialState = {
   //   },
   // ],
 }
+
+function publicIncreaseItemQuantity(state, action) {
+  // payload = pizzaId
+  const item = state.cart.find(item => item.pizzaId === action.payload)
+
+  if (!item) return false
+
+  item.quantity++
+  item.totalPrice = item.quantity * item.unitPrice
+
+  return true
+}
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
     addItem(state, action) {
       // payload = newItem
+      const flag = publicIncreaseItemQuantity(state, action.payload.pizzaId)
+
+      if (flag) return
       state.cart.push(action.payload)
     },
     deleteItem(state, action) {
@@ -26,11 +43,7 @@ const cartSlice = createSlice({
       state.cart = state.cart.filter(item => item.pizzaId !== action.payload)
     },
     increaseItemQuantity(state, action) {
-      // payload = pizzaId
-      const item = state.cart.find(item => item.pizzaId === action.payload)
-
-      item.quantity++
-      item.totalPrice = item.quantity * item.unitPrice
+      publicIncreaseItemQuantity(state, action)
     },
     decreaseItemQuantity(state, action) {
       // payload = pizzaId
